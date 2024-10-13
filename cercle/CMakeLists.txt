@@ -3,8 +3,8 @@ project(cercle LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(SFML COMPONENTS graphics window system)
-find_package(pugixml)
+find_package(SFML REQUIRED COMPONENTS graphics window system)
+find_package(pugixml REQUIRED)
 
 include_directories(
     	header

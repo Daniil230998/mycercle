@@ -11,12 +11,11 @@
   * \param c коэффициент c уравнения для заданной прямой
   * \return a,b,c
 */
-//Функция для расчета кооэффициентов уравнения прямой
 void logica::equationline(const int &x1,const int &y1,const int &x,const int &y,int &a,int &b,int &c){
     int y3,x3;
     y3 = y - y1;
     x3 = x1 - x;
-
+//Условие для выбора какая прямая вертикальная или горизонтальная
     if (x == x1) {
         a = y3;
         b = (y1 * (-1)) * x3;
@@ -40,7 +39,6 @@ void logica::equationline(const int &x1,const int &y1,const int &x,const int &y,
   * \param r Внутренний радиус окружности
   * \return true если окружность пересекает прямую, false если не пересекает
   */
-//Функция circle_line_intersection позволяет вычислить пересечение окружности с контуром фигуры
 bool logica::circle_line_intersection(const int &x1,const int &y1,const int &x,const int &y,const int &x4,const int &y4,const int &r) {
     int d=0, a=0, b=0, c=0;//, x3=0, y3=0;
     bool f=false;
@@ -108,7 +106,10 @@ bool logica::circle_intersection_rectangle(std::vector<Point> &X,const int &x1,c
           }
           i3=i3+1;
   }
- //Если окружность не находинтся внутри не одной из зон исключения. Значит проверяется есть ли пересечения контура с одной из зон
+ /* 
+ Если окружность не находинтся внутри не одной из зон исключения. Значит проверяется есть ли пересечения контура с одной из зон. 
+ Если окружность находится внутри зоны исключения значит данная точка не подходит.
+ */
  if(size==0){
 i=0;
 i2=5;
@@ -166,14 +167,16 @@ i3=i3+1;
   * \param calculation Флаг успешности расчета
   * \return вектор расположения коружностей и флаг успешности расчета
   */
- std::vector<readfile::Point> logica::logical(std::vector<Point> &c,const std::vector<std::pair<int,int>> &sercle,bool &calculation){
+ std::vector<Point> logica::logical(std::vector<Point> &c,const std::vector<std::pair<int,int>> &sercle,bool &calculation){
     std::vector<Point> result;
     bool d,d1,d2;
     int x0,y0,rin,rout,i,i2,i1,i3,i4,l,l1;
 
     l=abs(c[0].get("x")-c[2].get("x"));
     l1=abs(c[0].get("y")-c[2].get("y"));
+    //Общий цикл для расстановки всех окружностей
     for(i4=0;i4<sercle.size();i4=i4+1){
+        //Получение точки левого верхнего угла
         x0=c[1].get("x");
         y0=c[1].get("y");
         rin=sercle[i4].first;
@@ -183,17 +186,20 @@ i3=i3+1;
         i=0;
         d=false;
         while(i3<l1){
+            //Если есть пересечение с одной из зон, то поиск продолжается
             if((d==1 || d1==1 || d2==1) || (d==1 && d1==1 && d2==1)){
                 y0=y0-1;
                 d=false;
                 d1=false;
                 d2=false;
+                //Перемещение точки в левый угол по оси x
                 x0=c[1].get("x");
             }
             i1=0;
             while(i1<l){
                 i=0;
                 i2=1;
+                //Цикл проверки песечения окружности и линии, образующей зону расстановки
                 while(i<4){
                     if(i==3)i2=0;
                     d=circle_line_intersection(c[i].get("x"),c[i].get("y"),c[i2].get("x"),c[i2].get("y"),x0,y0,rin);
@@ -203,7 +209,7 @@ i3=i3+1;
                 }
                 i=0;
             
-                //цикл проверки пересечения кругов
+                //цикл проверки пересечения кругов 
                 while(i<result.size()){
                     d1=two_circle_intersection(x0,result[i].get("x"),y0,result[i].get("y"),rout,sercle[i].second);
                     if(d1==1)break;
@@ -211,12 +217,14 @@ i3=i3+1;
                 }
                 //Проверка пересекает ли внутренний радиус окружности зону исключения
                 d2=circle_intersection_rectangle(c,x0,y0,rin);
-
+                //Если есть пересечение, то перемещаем точки на 1 по оси x
                 if((d==1 || d1==1 || d2==1) || (d==1 && d1==1 && d2==1))x0=x0+1;
                 i1=i1+1;
             }
             i3=i3+1;
         }
+        //Если песечений нет после основго цикла, то происходит запись результата и берется следующая окружность, если есть персечение то останавливается вычисление и выдается ошибка
+        //так как это значит, что при данных условиях нельзя поставить данную окружность
        if(d==0 && d1==0 && d2==0){
          calculation=true;
          result.push_back(Point(x0,y0));

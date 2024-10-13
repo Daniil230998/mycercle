@@ -8,7 +8,7 @@
   * \return true если удалось выполнить чтение из файла или запись в файл, false если не удалось
   */
 
-bool readfile::geometry(std::vector<readfile::Point> &c,std::vector<std::pair<int,int>> &sercle,const int flag){
+bool object::geometry(std::vector<Point> &c,std::vector<std::pair<int,int>> &sercle,const int flag){
     int i=0,x=0,y=0,n=0;
     std::vector<Point> input,input1;
     bool r=true;
@@ -54,7 +54,7 @@ bool readfile::geometry(std::vector<readfile::Point> &c,std::vector<std::pair<in
   * \param input1 Вектор внутренних и внешних радиусов окружностей
   * \return true если удалось считать данные и если они коректные
   */
-bool readfile::readxml(std::vector<Point> &input,std::vector<Point> &input1){
+bool object::readxml(std::vector<Point> &input,std::vector<Point> &input1){
        pugi::xml_document doc;
        int x,y,x1,y1;
        int inner_rad,outter_rad;
@@ -117,7 +117,7 @@ bool readfile::readxml(std::vector<Point> &input,std::vector<Point> &input1){
   * \param result Вуктор содержащий информацию о найденных расположениях окружностей
   * \return true если окружность пересекает любую зону исключения, false если не пересекает
   */
-void readfile::writexml(std::vector<Point> &result){
+void object::writexml(std::vector<Point> &result){
     int i;
  pugi::xml_document doc;
 
