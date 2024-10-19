@@ -10,7 +10,7 @@
 #define _USE_MATH_DEFINES
 
 struct Point{
-    Point(int x,int y):x(x),y(y) {};
+    explicit Point(int x,int y):x(x),y(y) {};
     int get(const std::string a){
         int b;
         if(a=="x") b=x;
